@@ -1,9 +1,11 @@
-
+import HeroBanner from './HeroBanner';
+import Movies from './Movies';
 
 const Home = () => {
   return (
-    <div>
-      <h1>Home</h1>
+    <div className="bg-slate-900 min-h-screen">
+      <HeroBanner />
+      <Movies />
     </div>
   );
 };
