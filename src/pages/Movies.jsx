@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import MovieCard from './MovieCard';
-import { Search } from 'lucide-react';
-import { Link, useLocation } from 'react-router';
+import { Search, X } from 'lucide-react';
+import { useLocation } from 'react-router';
 
 const Movies = () => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
-  
+
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -16,19 +16,18 @@ const Movies = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const url = searchQuery 
+        const url = searchQuery
           ? `https://api.tvmaze.com/search/shows?q=${searchQuery}`
           : 'https://api.tvmaze.com/shows';
-          
+
         const movieData = await fetch(url);
         if (!movieData.ok) {
           throw new Error('Data Not found');
         }
         const data = await movieData.json();
-        
-        if (searchQuery) {
 
-          setMovies(data.map(item => item.show));
+        if (searchQuery) {
+          setMovies(data.map((item) => item.show));
         } else {
           setMovies(data);
         }
@@ -46,13 +45,13 @@ const Movies = () => {
     return () => clearTimeout(debounceTimer);
   }, [searchQuery]);
 
-   if (loading && movies.length === 0) {
-     return (
-       <div className="bg-slate-900 min-h-screen flex justify-center items-center">
-         <p className="text-2xl text-emerald-400 animate-pulse">Loading movies...</p>
-       </div>
-     );
-   }
+  if (loading && movies.length === 0) {
+    return (
+      <div className="bg-slate-900 min-h-screen flex justify-center items-center">
+        <p className="text-2xl text-emerald-400 animate-pulse">Loading movies...</p>
+      </div>
+    );
+  }
   if (error) return <p className="text-center text-red-500 mt-10">Error: {error}</p>;
 
   return (
@@ -71,16 +70,41 @@ const Movies = () => {
           {/* Content */}
           <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 lg:py-48 flex justify-center items-center text-center min-h-[80vh]">
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight leading-tight max-w-3xl text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-emerald-400 mx-auto">
-            Favorite Movie
+              Favorite Movie
             </h1>
           </div>
         </div>
       )}
       <div className="bg-slate-900 min-h-screen py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-extrabold text-white mb-8 text-center sm:text-left">
-            Popular Shows
-          </h2>
+          <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+            <h2 className="text-3xl font-extrabold text-white text-center sm:text-left">
+              Popular Shows
+            </h2>
+
+            {/* Search Bar */}
+            <div className="relative w-full sm:w-80">
+              <Search
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                size={20}
+              />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search movies..."
+                className="w-full bg-slate-800 text-white placeholder-gray-400 rounded-lg pl-10 pr-10 py-2 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                >
+                  <X size={18} />
+                </button>
+              )}
+            </div>
+          </div>
 
           {movies.length === 0 && !loading && !error ? (
             <p className="text-center text-gray-400 text-xl mt-10">
