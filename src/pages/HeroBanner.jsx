@@ -3,13 +3,12 @@ import { Link } from 'react-router';
 const HeroBanner = () => {
   return (
     <div className="relative bg-slate-900 overflow-hidden">
-      {/* Background Gradient/Image Effect */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/80 to-transparent z-10" />
+        <div className="absolute inset-0 bg-linear-to-r from-slate-900 via-slate-900/80 to-transparent z-10" />
         <img
+          src="movie.png"
+          alt=""
           className="w-full h-full object-cover object-center opacity-40"
-          src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2070&auto=format&fit=crop"
-          alt="Movie Background"
         />
       </div>
 
